@@ -1,0 +1,36 @@
+# https://console.bluemix.net/docs/services/visual-recognition/tutorial-custom-classifier.html#creating-a-custom-classifier
+# Creating Custom Classifier
+curl -X POST \
+--form "beagle_positive_examples=@beagle.zip" \
+--form "husky_positive_examples=@husky.zip" \
+--form "goldenretriever_positive_examples=@golden-retriever.zip" \
+--form "negative_examples=@cats.zip" \
+--form "name=dogs" \
+"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers?api_key={api-key}&version=2016-05-20"
+
+
+# Checking status of training
+curl -X GET \
+"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers/{classifier_id}?api_key={api-key}&version=2016-05-20"
+
+# Update an existing Classifier
+curl -X POST \
+--form "dalmatian_positive_examples=@dalmatian.zip" \
+--form "negative_examples=@more-cats.zip" \
+"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers/{classifier_id}?api_key={api-key}&version=2016-05-20"
+
+# Pass params in JSON file
+{
+  "classifier_ids": ["dogs_758547286", "default"]
+}
+
+
+# Classify an image with custom classifier
+curl -X POST \
+--form "images_file=@dogs.jpg" \
+--form "parameters=@myparams.json" \
+"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classify?api_key={api-key}&version=2016-05-20"
+
+# Delete a custom classifier
+curl -X DELETE \
+"https://gateway-a.watsonplatform.net/visual-recognition/api/v3/classifiers/{classifier_id}?api_key={api-key}&version=2016-05-20"
